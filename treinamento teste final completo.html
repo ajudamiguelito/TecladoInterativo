@@ -273,9 +273,6 @@ font-size: 30px;
 </head>
 <body>
 
-
-
-
 <div class="finger-title">
 <div class="dot" data-finger="4">4</div>
 <div class="dot" data-finger="3">3</div>
@@ -401,72 +398,6 @@ font-size: 30px;
   </div>
 
 <script>
-// --- CÓDIGO DE SEGURANÇA COM MÚLTIPLAS CHAVES E VALIDADES ---
-
-// --- CÓDIGO DE SEGURANÇA v3 (COM DIAGNÓSTICO AVANÇADO) ---
-
-// 1. CONFIGURAÇÃO DAS CHAVES E VALIDADES
-const CHAVES_VALIDAS = {
-  "TECLADO_SECRETO_2025": 366,
-  "ACESSO_30_DIAS": 30
-};
-const CHAVE_ACESSO_LOCAL = "teclado_access_token";
-
-// 2. LEITURA DA CHAVE NA URL
-const urlParams = new URLSearchParams(window.location.search);
-const chaveRecebida = urlParams.get('key') || urlParams.get('chave');
-
-// ==================================================================
-// INÍCIO DO DIAGNÓSTICO - Estas linhas nos ajudarão a ver o problema
-console.log("--- INICIANDO DIAGNÓSTICO DE CHAVE ---");
-console.log("Chave recebida da URL:", chaveRecebida);
-console.log("A chave recebida está na lista de chaves válidas?", Object.keys(CHAVES_VALIDAS).includes(chaveRecebida));
-console.log("-----------------------------------------");
-// FIM DO DIAGNÓSTICO
-// ==================================================================
-
-let acessoValidado = false;
-
-// 3. LÓGICA DE VALIDAÇÃO
-if (chaveRecebida && Object.keys(CHAVES_VALIDAS).includes(chaveRecebida)) {
-    const diasDeValidade = CHAVES_VALIDAS[chaveRecebida];
-    const dataExpiracao = new Date();
-    dataExpiracao.setDate(dataExpiracao.getDate() + diasDeValidade);
-    const novoToken = { validado: true, exp: dataExpiracao.toISOString() };
-    localStorage.setItem(CHAVE_ACESSO_LOCAL, JSON.stringify(novoToken));
-    acessoValidado = true;
-}
-
-if (!acessoValidado) {
-    try {
-        const tokenSalvo = localStorage.getItem(CHAVE_ACESSO_LOCAL);
-        if (tokenSalvo) {
-            const dataExpiracao = new Date(JSON.parse(tokenSalvo).exp);
-            if (dataExpiracao > new Date()) {
-                acessoValidado = true;
-            } else {
-                localStorage.removeItem(CHAVE_ACESSO_LOCAL);
-            }
-        }
-    } catch (e) { /* Ignora erros */ }
-}
-
-// 4. LIMPEZA DA URL
-if (chaveRecebida) {
-    const url = new URL(window.location.href);
-    const novaUrlLimpa = url.origin + url.pathname + url.hash; 
-    window.history.replaceState({}, document.title, novaUrlLimpa);
-}
-
-// 5. BLOQUEIO FINAL
-if (!acessoValidado) {
-    document.body.innerHTML = '<div style="text-align: center; padding-top: 50px;"><h1>⛔ Acesso Negado</h1><p>Conteúdo exclusivo. Utilize o link de acesso correto para liberar o teclado.</p></div>';
-    throw new Error('Acesso não autorizado. Chave inválida, ausente ou expirada.'); 
-}
-
-
-// O seu código do teclado vem APÓS este bloco.
-
 let imageIndex = 0;
 
 const alertImages = [
