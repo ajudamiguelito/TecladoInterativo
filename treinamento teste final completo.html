@@ -1,0 +1,853 @@
+
+<html 
+lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Teclado Interativo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+/* Estilo do fundo roxo claro nas letras (balaozinho) para o título */
+h1 {
+  background-color: #b8a9f0; /* Cor de fundo roxa mais clara para o título */
+  color: white;               /* Texto branco para contraste */
+  padding: 5px 10px;          /* Espaçamento para o efeito de balaozinho */
+  border-radius: 10px;        /* Bordas arredondadas */
+  display: inline-block;      /* Para não afetar o layout ao redor do título */
+}
+
+/* Estilo do fundo roxo claro nas letras (balaozinho) para os textos */
+label, #tempo, .finger-title {
+  background-color: #b8a9f0; /* Fundo roxo claro para o texto */
+  color: white;               /* Texto branco para contraste */
+  padding: 5px 10px;          /* Espaçamento para o efeito de balaozinho */
+  border-radius: 10px;        /* Bordas arredondadas */
+}
+
+/* Não alterar os campos de seleção ou os botões */
+select, button {
+  background-color: white;  /* Deixa o fundo transparente */
+  color: black;                   /* Cor de texto normal */
+  padding: 5px 10px;              /* Estilo de preenchimento padrão */
+  border-radius: 5px;             /* Borda arredondada */
+  border: 1px solid #ccc;        /* Borda leve para campos de seleção e botões */
+}
+
+.finger-title {
+display: flex;
+align-items: center;
+justify-content: center;
+flex-wrap: wrap;
+gap: 8px;
+margin-bottom: 20px;
+}
+
+.finger-title .dot {
+width: 32px;
+height: 32px;
+background-color: #ddd;
+border-radius: 50%;
+font-weight: bold;
+font-size: 16px;
+color: #333;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: background 0.3s, transform 0.3s;
+}
+
+.finger-title .dot.active {
+background-color: #845ef7;
+color: white;
+transform: scale(1.2);
+}
+
+.titulo-interativo {
+margin: 0 12px;
+font-size: 24px;
+font-weight: bold;
+color: #333;
+}
+body {
+  background: #bfe0ff; /* Novo fundo azul claro */
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 40px;
+}
+
+select, button {
+font-size: 16px;
+padding: 8px 12px;
+margin: 10px;
+}
+
+.output {
+margin-top: 20px;
+font-size: 24px;
+font-weight: bold;
+background: white;
+padding: 20px;
+border: 2px dashed #ccc;
+display: inline-block;
+min-width: 300px;
+border-radius: 10px;
+}
+
+.correct { color: green; }
+.incorrect { color: red; }
+
+.keyboard {
+margin-top: 30px;
+}
+
+.row {
+display: flex;
+justify-content: center;
+gap: 6px;
+margin: 12px 0;
+flex-wrap: wrap;
+}
+
+.key { 
+  background: #ffd54a; /* Cor padrão das teclas (amarelo do Arquivo 2) */
+  border-radius: 10px; /* Borda mais arredondada */
+  width: 64px; /* NOVO TAMANHO BASE */
+  height: 64px; /* NOVO TAMANHO BASE */
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-weight: 800; /* Mais negrito */
+  font-size: 18px; /* Fonte maior */
+  color: #222; 
+  border: none; 
+  box-shadow: 0 6px #f0b300; /* Sombra do Arquivo 2 */
+  cursor: pointer; 
+  user-select: none; 
+  transition: transform 0.09s ease, box-shadow 0.09s; 
+  text-transform: uppercase;
+}
+
+.key.wide { width: 96px; } /* 1.5x o tamanho base (para Backspace/Tab) */
+.key.wider { width: 128px; } /* 2x o tamanho base (para CapsLock/Shift/Enter) */
+.key.space { width: 384px; } /* 6x o tamanho base (para Espaço) */
+
+.key.active {
+  transform: translateY(6px); /* Efeito de clique do Arquivo 2 */
+  box-shadow: 0 0 rgba(0,0,0,0.06); /* Remove a sombra ao clicar */
+  background: #ff9f1a; /* Cor de clique do Arquivo 2 */
+  color: white;
+}
+
+.stats {
+margin-top: 20px;
+display: flex;
+justify-content: center;
+gap: 20px;
+}
+
+.stat-box {
+background-color: #e0bbff;
+padding: 20px;
+border-radius: 10px;
+min-width: 100px;
+font-weight: bold;
+font-size: 18px;
+}
+
+/* Esconde o input no layout */
+#hiddenInput {
+position: absolute;
+opacity: 0;
+height: 1px;
+width: 1px;
+font-size: 30px;
+}
+
+/* Media query para dispositivos móveis */
+@media (max-width: 900px) {
+    /* 1. Correção do Título/Dedos (Seus ajustes) */
+    .finger-title {
+        flex-wrap: wrap;
+        gap: 2px;
+    }
+    
+    .finger-title .dot {
+        width: 12px;
+        height: 12px;
+        font-size: 8px;
+    }
+    
+    .titulo-interativo {
+        font-size: 12px;
+        margin: 0 3px;
+    }
+
+    /* 2. Correção do Grupo de Controles (label, select, button) */
+    label, select, button {
+        display: inline-block !important;
+        width: auto !important;
+        margin: 1px 0.5% !important;
+        padding: 1px 3px !important;
+        font-size: 12px !important;
+    }
+    
+    /* Força a quebra de linha antes do primeiro label e do botão Iniciar */
+    label:first-of-type, #startBtn {
+        clear: both;
+    }
+    
+   	
+	#listSelect {
+        width: 20% !important;
+    }
+	
+	#wordSelect {
+        width: 25% !important;
+    }
+	 /* Ajuste fino para os selects */
+    #timeSelect {
+        width: 30% !important;
+    }
+    
+    /* O botão Iniciar deve ser menor */
+    #startBtn {
+        width: 25% !important;
+    }
+
+    /* Ajustes para o corpo da página */
+    body {
+        padding: 10px;
+    }
+    
+    /* Ajustes para a área de saída (Quadro Branco) */
+    .output {
+        font-size: 12px !important; /* Reduz a fonte */
+        padding: 8px !important; /* Reduz o padding */
+        display: block;
+        min-width: 50%;
+        max-width: 50%;
+        margin: 5px auto; /* REDUZIDO */
+    }
+    
+    /* 3. Correção do Grupo de Estatísticas */
+    .stats {
+        flex-direction: row;
+        gap: 2px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 5px !important; /* REDUZIDO */
+    }
+    
+    .stat-box {
+        width: 25% !important;
+        margin: 0 0.5% !important;
+        padding: 3px !important;
+        font-size: 12px !important;
+    }
+    
+    /* Ajustes para o teclado */
+    .keyboard {
+        margin-top: 10px !important; /* REDUZIDO */
+    }
+    
+    .row {
+        gap: 0.5vw;
+        margin: 1vw 0;
+    }
+    
+    .key { 
+        width: 5.0vw;
+        height: 5.0vw; 
+        font-size: 2.5vw;
+        border-radius: 6px;
+        box-shadow: 0 4px #f0b300;
+    }
+    
+    /* Ajustes para teclas especiais */
+    .key.wide { width: 7.5vw; }
+    .key.wider { width: 10.0vw; }
+    .key.space { width: 30.0vw; }
+}
+
+
+</style>
+</head>
+<body>
+
+
+
+
+<div class="finger-title">
+<div class="dot" data-finger="4">4</div>
+<div class="dot" data-finger="3">3</div>
+<div class="dot" data-finger="2">2</div>
+<div class="dot" data-finger="1">1</div>
+<div class="dot" data-finger="0">0</div>
+
+<div class="titulo-interativo">Teclado Interativo</div>
+
+<div class="dot" data-finger="0">0</div>
+<div class="dot" data-finger="5">1</div>
+<div class="dot" data-finger="6">2</div>
+<div class="dot" data-finger="7">3</div>
+<div class="dot" data-finger="8">4</div>
+</div>
+
+<label for="timeSelect">Tempo:</label>
+<select id="timeSelect">
+<option value="60">60 segundos</option>
+<option value="120">120 segundos</option>
+<option value="180">180 segundos</option>
+</select>
+
+<label for="listSelect">Escolha a lista:</label>
+<select id="listSelect">
+<option value="1">Lista 1</option>
+<option value="2">Lista 2</option>
+<option value="3">Lista 3</option>
+<option value="4">Lista 4</option>
+</select>
+
+<label for="wordSelect">Escolha a palavra:</label>
+<select id="wordSelect"></select>
+
+<button id="startBtn" onclick="startTyping()" type="button">Iniciar</button>
+
+<!-- Campo invisível para ativar o teclado no celular -->
+<input type="text" id="hiddenInput" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+
+<div class="output" id="output">Clique em "Iniciar"</div>
+
+<div class="stats">
+<div class="stat-box" id="timerBox">Tempo: --:--</div>
+<div class="stat-box" id="errorBox">Erros: 0</div>
+<div class="stat-box" id="ppmBox">PPM: 0</div>
+</div>
+
+<div class="keyboard">
+<div class="row">
+<div class="key" data-key="¹">¹</div>
+<div class="key" data-key="1">1</div>
+<div class="key" data-key="2">2</div>
+<div class="key" data-key="3">3</div>
+<div class="key" data-key="4">4</div>
+<div class="key" data-key="5">5</div>
+<div class="key" data-key="6">6</div>
+<div class="key" data-key="7">7</div>
+<div class="key" data-key="8">8</div>
+<div class="key" data-key="9">9</div>
+<div class="key" data-key="0">0</div>
+<div class="key" data-key="-">-</div>
+<div class="key" data-key="=">=</div>
+<div class="key wide" data-key="Backspace">←</div>
+</div>
+<div class="row">
+<div class="key wide" data-key="Tab">Tab</div>
+<div class="key" data-key="q">q</div>
+<div class="key" data-key="w">w</div>
+<div class="key" data-key="e">e</div>
+<div class="key" data-key="r">r</div>
+<div class="key" data-key="t">t</div>
+<div class="key" data-key="y">y</div>
+<div class="key" data-key="u">u</div>
+<div class="key" data-key="i">i</div>
+<div class="key" data-key="o">o</div>
+<div class="key" data-key="p">p</div>
+<div class="key" data-key="´">´</div>
+<div class="key" data-key="[">[</div>
+</div>
+<div class="row">
+<div class="key wider" data-key="CapsLock">Caps</div>
+<div class="key" data-key="a">a</div>
+<div class="key" data-key="s">s</div>
+<div class="key" data-key="d">d</div>
+<div class="key" data-key="f">f</div>
+<div class="key" data-key="g">g</div>
+<div class="key" data-key="h">h</div>
+<div class="key" data-key="j">j</div>
+<div class="key" data-key="k">k</div>
+<div class="key" data-key="l">l</div>
+<div class="key" data-key="ç">ç</div>
+<div class="key" data-key="~">~</div>
+<div class="key" data-key="]">]</div>
+</div>
+<div class="row">
+<div class="key wider" data-key="Shift">Shift</div>
+<div class="key" data-key="\">\\</div>
+<div class="key" data-key="z">z</div>
+<div class="key" data-key="x">x</div>
+<div class="key" data-key="c">c</div>
+<div class="key" data-key="v">v</div>
+<div class="key" data-key="b">b</div>
+<div class="key" data-key="n">n</div>
+<div class="key" data-key="m">m</div>
+<div class="key" data-key=",">,</div>
+<div class="key" data-key=".">.</div>
+<div class="key" data-key=";">;</div>
+<div class="key wider" data-key="Enter">Enter</div>
+</div>
+<div class="row">
+<div class="key space" data-key=" ">Espaço</div>
+</div>
+</div>
+
+<!-- Janela de Alerta com Imagem e Link -->
+<div id="alertBox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:9999;">
+  <div style="background:white; padding:20px; border-radius:10px; text-align:center; max-width:90%; max-height:90%;">
+    <img id="carouselImage" src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Ícone" style="height:240px; width:240px; object-fit:cover; display:block; margin:0 auto 20px auto;" />
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <button id="goToSiteBtn" onclick="goToLink()" style="background-color:green; color:white; padding:10px 20px; border:none; border-radius:5px; font-size:16px;">VAI PARA O SITE</button>
+      <button onclick="closeAlertBox()" style="background-color:#ccc; padding:10px 20px; border:none; border-radius:5px; font-size:16px;">Fechar</button>
+    </div>
+  </div>
+
+<script>
+// --- CÓDIGO DE SEGURANÇA COM MÚLTIPLAS CHAVES E VALIDADES ---
+
+// --- CÓDIGO DE SEGURANÇA v3 (COM DIAGNÓSTICO AVANÇADO) ---
+
+// 1. CONFIGURAÇÃO DAS CHAVES E VALIDADES
+const CHAVES_VALIDAS = {
+  "TECLADO_SECRETO_2025": 366,
+  "ACESSO_30_DIAS": 30
+};
+const CHAVE_ACESSO_LOCAL = "teclado_access_token";
+
+// 2. LEITURA DA CHAVE NA URL
+const urlParams = new URLSearchParams(window.location.search);
+const chaveRecebida = urlParams.get('key') || urlParams.get('chave');
+
+// ==================================================================
+// INÍCIO DO DIAGNÓSTICO - Estas linhas nos ajudarão a ver o problema
+console.log("--- INICIANDO DIAGNÓSTICO DE CHAVE ---");
+console.log("Chave recebida da URL:", chaveRecebida);
+console.log("A chave recebida está na lista de chaves válidas?", Object.keys(CHAVES_VALIDAS).includes(chaveRecebida));
+console.log("-----------------------------------------");
+// FIM DO DIAGNÓSTICO
+// ==================================================================
+
+let acessoValidado = false;
+
+// 3. LÓGICA DE VALIDAÇÃO
+if (chaveRecebida && Object.keys(CHAVES_VALIDAS).includes(chaveRecebida)) {
+    const diasDeValidade = CHAVES_VALIDAS[chaveRecebida];
+    const dataExpiracao = new Date();
+    dataExpiracao.setDate(dataExpiracao.getDate() + diasDeValidade);
+    const novoToken = { validado: true, exp: dataExpiracao.toISOString() };
+    localStorage.setItem(CHAVE_ACESSO_LOCAL, JSON.stringify(novoToken));
+    acessoValidado = true;
+}
+
+if (!acessoValidado) {
+    try {
+        const tokenSalvo = localStorage.getItem(CHAVE_ACESSO_LOCAL);
+        if (tokenSalvo) {
+            const dataExpiracao = new Date(JSON.parse(tokenSalvo).exp);
+            if (dataExpiracao > new Date()) {
+                acessoValidado = true;
+            } else {
+                localStorage.removeItem(CHAVE_ACESSO_LOCAL);
+            }
+        }
+    } catch (e) { /* Ignora erros */ }
+}
+
+// 4. LIMPEZA DA URL
+if (chaveRecebida) {
+    const url = new URL(window.location.href);
+    const novaUrlLimpa = url.origin + url.pathname + url.hash; 
+    window.history.replaceState({}, document.title, novaUrlLimpa);
+}
+
+// 5. BLOQUEIO FINAL
+if (!acessoValidado) {
+    document.body.innerHTML = '<div style="text-align: center; padding-top: 50px;"><h1>⛔ Acesso Negado</h1><p>Conteúdo exclusivo. Utilize o link de acesso correto para liberar o teclado.</p></div>';
+    throw new Error('Acesso não autorizado. Chave inválida, ausente ou expirada.'); 
+}
+
+
+// O seu código do teclado vem APÓS este bloco.
+
+let imageIndex = 0;
+
+const alertImages = [
+  "https://picsum.photos/id/1015/600/400",
+  "https://picsum.photos/id/1025/600/400",
+  "https://picsum.photos/id/1035/600/400",
+  "https://picsum.photos/id/1045/600/400",
+  "https://picsum.photos/id/1055/600/400",
+  "https://picsum.photos/id/1065/600/400",
+  "https://picsum.photos/id/1075/600/400",
+  "https://picsum.photos/id/1085/600/400",
+  "https://picsum.photos/id/1095/600/400",
+  "https://picsum.photos/id/1105/600/400"
+];
+
+const linksFinais = [
+  "https://",
+  "https://",
+  "https://",
+  "https://",
+  "https://",
+  "https://",
+  "https://",
+  "https://",
+  "https://",
+  "https://"
+];
+
+document.getElementById("carouselImage").src = alertImages[imageIndex];
+
+
+function mostrarAvisoFinal() {
+const aviso = document.getElementById("aviso-final");
+const imagem = document.getElementById("imagem-final");
+const botaoLink = document.getElementById("botao-link");
+
+imagem.src = alertImages[imagemAtual];
+botaoLink.href = linksFinais[imagemAtual];
+
+aviso.style.display = "flex";
+
+imagemAtual = (imagemAtual + 1) % imagensFinais.length;
+}
+
+const output = document.getElementById("output");
+const select = document.getElementById("wordSelect");
+const timerBox = document.getElementById("timerBox");
+const errorBox = document.getElementById("errorBox");
+const ppmBox = document.getElementById("ppmBox");
+const timeSelect = document.getElementById("timeSelect");
+const listSelect = document.getElementById("listSelect");
+const hiddenInput = document.getElementById("hiddenInput");
+
+const wordLists = {
+1: [
+"QWER ", "POIU ", "QWRE ", "POUI ", "QEWR ", "PIOU ", "QERW ", "PIUO ", "QRWE ", "PUOI ", "QREW ", "PUIO ", 
+"WQER ", "OPIU ", "WQRE ", "OPUI ", "WEQR ", "OIPU ", "WERQ ", "OIUP ", "WRQE ", "OUPI ", "WREQ ", "OUIP ", 
+"EQWR ", "IPOU ", "EQRW ", "IPUO ", "EWQR ", "IOPU ", "EWRQ ", "IOUP ", "ERQW ", "IUPO ", "ERWQ ", "IUOP ", 
+"RQWE ", "UPOI ", "RQEW ", "UPIO ", "RWQE ", "UOPI ", "RWEQ ", "UOIP ", "REQW ", "UIPO ", "REWQ ", "UIOP ",
+"QWET ", "POIY ", "QWTE ", "POYI ", "QEWT ", "PIOY ", "QETW ", "PIYO ", "QTWE ", "PYOI ", "QTEW ", "PYIO ", 
+"WQET ", "OPIY ", "WQTE ", "OPYI ", "WEQT ", "OIPY ", "WETQ ", "OIYP ", "WTQE ", "OYPI ", "WTEQ ", "OYIP ", 
+"EQWT ", "IPOY ", "EQTW ", "IPYO ", "EWQT ", "IOPY ", "EWTQ ", "IOYP ", "ETQW ", "IYPO ", "ETWQ ", "IYOP ", 
+"TQWE ", "YPOI ", "TQEW ", "YPIO ", "TWQE ", "YOPI ", "TWEQ ", "YOIP ", "TEQW ", "YIPO ", "TEWQ ", "YIOP ",
+"QWTR ", "POYU ", "QWRT ", "POUY ", "QTWR ", "PYOU ", "QTRW ", "PYUO ", "QRWT ", "PUOY ", "QRTW ", "PUYO ", 
+"WQTR ", "OPYU ", "WQRT ", "OPUY ", "WTQR ", "OYPU ", "WTRQ ", "OYUP ", "WRQT ", "OUPY ", "WRTQ ", "OUYP ", 
+"TQWR ", "YPOU ", "TQRW ", "YPUO ", "TWQR ", "YOPU ", "TWRQ ", "YOUP ", "TRQW ", "YUPO ", "TRWQ ", "YUOP ", 
+"RQWT ", "UPOY ", "RQTW ", "UPYO ", "RWQT ", "UOPY ", "RWTQ ", "UOYP ", "RTQW ", "UYPO ", "RTWQ ", "UYOP ",
+"QTER ", "PYIU ", "QTRE ", "PYUI ", "QETR ", "PIYU ", "QERT ", "PIUY ", "QRTE ", "PUYI ", "QRET ", "PUIY ",
+"TQER ", "YPIU ", "TQRE ", "YPUI ", "TEQR ", "YIPU ", "TERQ ", "YIUP ", "TRQE ", "YUPI ", "TREQ ", "YUIP ",
+"EQTR ", "IPYU ", "EQRT ", "IPUY ", "ETQR ", "IYPU ", "ETRQ ", "IYUP ", "ERQT ", "IUPY ", "ERTQ ", "IUYP ",
+"RQTE ", "UPYI ", "RQET ", "UPIY ", "RTQE ", "UYPI ", "RTEQ ", "UYIP ", "REQT ", "UIPY ", "RETQ ", "UIYP ",
+"QWET ", "POIY ", "QWTE ", "POYI ", "QEWT ", "PIOY ", "QETW ", "PIYO ", "QTWE ", "PYOI ", "QTEW ", "PYIO ", 
+"WQET ", "OPIY ", "WQTE ", "OPYI ", "WEQT ", "OIPY ", "WETQ ", "OIYP ", "WTQE ", "OYPI ", "WTEQ ", "OYIP ", 
+"EQWT ", "IPOY ", "EQTW ", "IPYO ", "EWQT ", "IOPY ", "EWTQ ", "IOYP ", "ETQW ", "IYPO ", "ETWQ ", "IYOP ", 
+"TQWE ", "YPOI ", "TQEW ", "YPIO ", "TWQE ", "YOPI ", "TWEQ ", "YOIP ", "TEQW ", "YIPO ", "TEWQ ", "YIOP "],
+2: [
+"ASDF ", "ÇLKJ ", "ASFD ", "ÇLJK ", "ADSF ", "ÇKLJ ", "ADFS ", "ÇKJL ", "AFSD ", "ÇJLK ", "AFDS ", "ÇJKL ", 
+"SADF ", "LÇKJ ", "SAFD ", "LÇJK ", "SDAF ", "LKÇJ ", "SDFA ", "LKJÇ ", "SFAD ", "LJÇK ", "SFDA ", "LJKÇ ", 
+"DASF ", "KÇLJ ", "DAFS ", "KÇJL ", "DSAF ", "KLÇJ ", "DSFA ", "KLJÇ ", "DFAS ", "KJÇL ", "DFSA ", "KJLÇ ", 
+"FASD ", "JÇLK ", "FADS ", "JÇKL ", "FSAD ", "JLÇK ", "FSDA ", "JLKÇ ", "FDAS ", "JKÇL ", "FDSA ", "JKLÇ ",
+"ASDG ", "ÇLKH ", "ASGD ", "ÇLHK ", "ADSG ", "ÇKLH ", "ADGS ", "ÇKHL ", "AGSD ", "ÇHLK ", "AGDS ", "ÇHKL ", 
+"SADG ", "LÇKH ", "SAGD ", "LÇHK ", "SDAG ", "LKÇH ", "SDGA ", "LKHÇ ", "SGAD ", "LHÇK ", "SGDA ", "LHKÇ ", 
+"DASG ", "KÇLH ", "DAGS ", "KÇHL ", "DSAG ", "KLÇH ", "DSGA ", "KLHÇ ", "DGAS ", "KHÇL ", "DGSA ", "KHLÇ ", 
+"GASD ", "HÇLK ", "GADS ", "HÇKL ", "GSAD ", "HLÇK ", "GSDA ", "HLKÇ ", "GDAS ", "HKÇL ", "GDSA ", "HKLÇ ",
+"ASGF ", "ÇLHJ ", "ASFG ", "ÇLJH ", "AGSF ", "ÇHLJ ", "AGFS ", "ÇHJL ", "AFSG ", "ÇJLH ", "AFGS ", "ÇJHL ", 
+"SAGF ", "LÇHJ ", "SAFG ", "LÇJH ", "SGAF ", "LHÇJ ", "SGFA ", "LHJÇ ", "SFAG ", "LJÇH ", "SFGA ", "LJHÇ ", 
+"GASF ", "HÇLJ ", "GAFS ", "HÇJL ", "GSAF ", "HLÇJ ", "GSFA ", "HLJÇ ", "GFAS ", "HJÇL ", "GFSA ", "HJLÇ ", 
+"FASG ", "JÇLH ", "FAGS ", "JÇHL ", "FSAG ", "JLÇH ", "FSGA ", "JLHÇ ", "FGAS ", "JHÇL ", "FGSA ", "JHLÇ ",
+"AGDF ", "ÇHKJ ", "AGFD ", "ÇHJK ", "ADGF ", "ÇKHJ ", "ADFG ", "ÇKJH ", "AFGD ", "ÇJHK ", "AFDG ", "ÇJKH ", 
+"GADF ", "HÇKJ ", "GAFD ", "HÇJK ", "GDAF ", "HKÇJ ", "GDFA ", "HKJÇ ", "GFAD ", "HJÇK ", "GFDA ", "HJKÇ ", 
+"DAGF ", "KÇHJ ", "DAFG ", "KÇJH ", "DGAF ", "KHÇJ ", "DGFA ", "KHJÇ ", "DFAG ", "KJÇH ", "DFGA ", "KJHÇ ", 
+"FAGD ", "JÇHK ", "FADG ", "JÇKH ", "FGAD ", "JHÇK ", "FGDA ", "JHKÇ ", "FDAG ", "JKÇH ", "FDGA ", "JKHÇ ",
+"ASDG ", "ÇLKH ", "ASGD ", "ÇLHK ", "ADSG ", "ÇKLH ", "ADGS ", "ÇKHL ", "AGSD ", "ÇHLK ", "AGDS ", "ÇHKL ", 
+"SADG ", "LÇKH ", "SAGD ", "LÇHK ", "SDAG ", "LKÇH ", "SDGA ", "LKHÇ ", "SGAD ", "LHÇK ", "SGDA ", "LHKÇ ", 
+"DASG ", "KÇLH ", "DAGS ", "KÇHL ", "DSAG ", "KLÇH ", "DSGA ", "KLHÇ ", "DGAS ", "KHÇL ", "DGSA ", "KHLÇ ", 
+"GASD ", "HÇLK ", "GADS ", "HÇKL ", "GSAD ", "HLÇK ", "GSDA ", "HLKÇ ", "GDAS ", "HKÇL ", "GDSA ", "HKLÇ "],
+3: [
+"\\ZXC ", ".,MN ", "\\ZCX ", ".,NM ", "\\XZC ", ".M,N ", "\\XCZ ", ".MN, ", "\\CZX ", ".N,M ", "\\CXZ ", ".NM, ", 
+"Z\\XC ", ",.MN ", "Z\\CX ", ",.NM ", "ZX\\C ", ",M.N ", "ZXC\\ ", ",MN. ", "ZC\\X ", ",N.M ", "ZCX\\ ", ",NM. ", 
+"X\\ZC ", "M.,N ", "X\\CZ ", "M.N, ", "XZ\\C ", "M,.N ", "XZC\\ ", "M,N. ", "XC\\Z ", "MN., ", "XCZ\\ ", "MN,. ", 
+"C\\ZX ", "N.,M ", "C\\XZ ", "N.M, ", "CZ\\X ", "N,.M ", "CZX\\ ", "N,M. ", "CX\\Z ", "NM., ", "CXZ\\ ", "NM,. ",
+"\\ZXV ", ".,MB ", "\\ZVX ", ".,BM ", "\\XZV ", ".M,B ", "\\XVZ ", ".MB, ", "\\VZX ", ".B,M ", "\\VXZ ", ".BM, ", 
+"Z\\XV ", ",.MB ", "Z\\VX ", ",.BM ", "ZX\\V ", ",M.B ", "ZXV\\ ", ",MB. ", "ZV\\X ", ",B.M ", "ZVX\\ ", ",BM. ", 
+"X\\ZV ", "M.,B ", "X\\VZ ", "M.B, ", "XZ\\V ", "M,.B ", "XZV\\ ", "M,B. ", "XV\\Z ", "MB., ", "XVZ\\ ", "MB,. ", 
+"V\\ZX ", "B.,M ", "V\\XZ ", "B.M, ", "VZ\\X ", "B,.M ", "VZX\\ ", "B,M. ", "VX\\Z ", "BM., ", "VXZ\\ ", "BM,. ",
+"\\ZVC ", ".,BN ", "\\ZCV ", ".,NB ", "\\VZC ", ".B,N ", "\\VCZ ", ".BN, ", "\\CZV ", ".N,B ", "\\CVZ ", ".NB, ", 
+"Z\\VC ", ",.BN ", "Z\\CV ", ",.NB ", "ZV\\C ", ",B.N ", "ZVC\\ ", ",BN. ", "ZC\\V ", ",N.B ", "ZCV\\ ", ",NB. ", 
+"V\\ZC ", "B.,N ", "V\\CZ ", "B.N, ", "VZ\\C ", "B,.N ", "VZC\\ ", "B,N. ", "VC\\Z ", "BN., ", "VCZ\\ ", "BN,. ", 
+"C\\ZV ", "N.,B ", "C\\VZ ", "N.B, ", "CZ\\V ", "N,.B ", "CZV\\ ", "N,B. ", "CV\\Z ", "NB., ", "CVZ\\ ", "NB,. ",
+"\\VXC ", ".BMN ", "\\VCX ", ".BNM ", "\\XVC ", ".MBN ", "\\XCV ", ".MNB ", "\\CVX ", ".NBM ", "\\CXV ", ".NMB ", 
+"V\\XC ", "B.MN ", "V\\CX ", "B.NM ", "VX\\C ", "BM.N ", "VXC\\ ", "BMN. ", "VC\\X ", "BN.M ", "VCX\\ ", "BNM. ", 
+"X\\VC ", "M.BN ", "X\\CV ", "M.NB ", "XV\\C ", "MB.N ", "XVC\\ ", "MBN. ", "XC\\V ", "MN.B ", "XCV\\ ", "MNB. ", 
+"C\\VX ", "N.BM ", "C\\XV ", "N.MB ", "CV\\X ", "NB.M ", "CVX\\ ", "NBM. ", "CX\\V ", "NM.B ", "CXV\\ ", "NMB. ",
+"\\ZXV ", ".,MB ", "\\ZVX ", ".,BM ", "\\XZV ", ".M,B ", "\\XVZ ", ".MB, ", "\\VZX ", ".B,M ", "\\VXZ ", ".BM, ", 
+"Z\\XV ", ",.MB ", "Z\\VX ", ",.BM ", "ZX\\V ", ",M.B ", "ZXV\\ ", ",MB. ", "ZV\\X ", ",B.M ", "ZVX\\ ", ",BM. ", 
+"X\\ZV ", "M.,B ", "X\\VZ ", "M.B, ", "XZ\\V ", "M,.B ", "XZV\\ ", "M,B. ", "XV\\Z ", "MB., ", "XVZ\\ ", "MB,. ", 
+"V\\ZX ", "B.,M ", "V\\XZ ", "B.M, ", "VZ\\X ", "B,.M ", "VZX\\ ", "B,M. ", "VX\\Z ", "BM., ", "VXZ\\ ", "BM,. ",
+"ZXVC ", ",MBC ", "ZCXV ", ",NMB ", "ZCVX ", ",NBM ", "ZVXC ", ",BMC ", "ZVCX ", ",BNM ", "CXZV ", "NM,B ", "CXVZ ", 
+"NMB, ", "CZXV ", "N,MB ", "CZVX ", "N,BM ", "CVXZ ", "NBM, ", "CVZX ", "NB,M ", "XZCV ", "MN,B ", "XZVC ", "M,BC ", 
+"XCZV ", "MN,B ", "XCVZ ", "MNB, ", "XVZC ", "MB,N ", "XVCZ ", "MBN, ", "VXCZ ", "BMN, ", "VXZC ", "BM,N ", "VCXZ ", 
+"BNM, ", "VCZX ", "BN,M ", "VZXC ", "B,MC ", "VZCX ", "B,NM ", "ZQVA ", ",PBÇ ", "ZAQV ", ",ÇPB ", "ZAVQ ", ",ÇBP ", 
+"ZVQA ", ",BPÇ ", "ZVQA ", ",BPÇ ", "AQZV ", "ÇP,B ", "AQVZ ", "ÇPB, ", "AZQV ", "Ç,PB ", "AZVQ ", "Ç,BP ", "AVQZ ",
+"ÇBP, ", "AVZQ ", "ÇB,P ", "QZAV ", "P,ÇB ", "QZVA ", "P,BÇ ", "QAZV ", "PÇ,B ", "QAVZ ", "PÇB, ", "QVZV ", "PB,B ",
+"QVAZ ", "PBÇ, ", "VQAZ ", "BPÇ, ", "VQZA ", "BP,Ç ", "VAQZ ", "BÇP, ", "VAZQ ", "BÇ,P ", "VZQA ", "B,PÇ ", "VZAQ ",
+"B,ÇP ", "WXSC ", "OMNL ", "WCXS ", "ONML ", "WCSX ", "ONLM ", "WSXC ", "OLMN ", "WSXC ", "OLMN ", "CXWS ", "NMOL ", 
+"CXWS ", "NMOL ", "CWXS ", "NOML ", "CWSX ", "NOLM ", "CSXW ", "NLMO ", "CSWX ", "NLOM ", "XWCS ", "MOML ", "XWSC ", 
+"MOLN ", "XCWZ ", "MNOL ", "XCSW ", "MNLO ", "XSWC ", "MLON ", "XSCW ", "MLNW ", "SWCX ", "LWMN ", "SXWC ", "LMON ", 
+"SWCZ ", "LMNO ", "SWZX ", "LMON ", "WZSC ", "OMLN ", "WZCX ", "OLMN ", "ICK, ", "ECDZ ", "IC,K ", "ECZD ", "ICK, ", 
+"ECDZ ", "IK,C ", "EDZC ", "IKC, ", "EDCZ ", "C,IK ", "CZED ", "C,IK ", "CZED ", "CI,K ", "CEZD ", "CIK, ", "CEDZ ",
+"CK,I ", "CDZE ", "CKI, ", "CDEZ ", ",ICK ", "ZECD ", ",IKC ", "ZEDC ", ",CIK ", "ZCED ", "C,KC ", "CZDC ", "CKI, ", 
+"CDEZ ", "CKI, ", "CDEZ ", "KIC, ", "DECZ ", "K,IC ", "DZEC ", "KIC, ", "DECZ ", "KIC, ", "DECZ ", "I,KC ", "EZDC ",  
+"IKC, ", "EDCZ ", "UBJC ", "RVFX ", "UBCJ ", "RVXF ", "UBJC ", "RVFX ", "UJCB ", "RFXV ", "UJBC ", "RFVX ", "BCUJ ", 
+"VXRF ", "BCUJ ", "VXRF ", "BUCJ ", "VRXF ", "BUJC ", "VRFX ", "BJCU ", "VFXR ", "BJUC ", "VFRX ", "CUBJ ", "XRVF ", 
+"CUJB ", "XRFV ", "CBUJ ", "XVRF ", "BCJB ", "VXFV ", "BJUC ", "VFRX ", "BJUC ", "VFRX ", "JUBC ", "FRVX ", "JCUB ", 
+"FXRV ", "UCJB ", "RXFV ", "UJBC ", "RFVX ", "YBKH ", "TVDG ", "YBHK ", "TVGD ", "YBKH ", "TVDG ", "YKHB ", "TDGV ",
+"YKBH ", "TDVG ", "BHYK ", "VGTD ", "BHYK ", "VGTD ", "BYHK ", "VTGD ", "BYKH ", "VTDG ", "BKHY ", "VDGT ", "BKYH ", 
+"VDTG ", "HYBK ", "GTVD ", "HYKB ", "GTDV ", "HBYK ", "GVTD ", "BHKB ", "VGDV ", "BKYH ", "VDTG ", "BKYH ", "VDTG ",  
+"KYBH ", "DTVG ", "KHYB ", "DGTV ", "KYBH ", "DTVG ", "KYBH ", "DTVG ", "YHKB ", "TGDV ", "YKBH ", "TDVG "],
+4: [
+"1302 ", "2947 ", "3810 ", "4702 ", "5681 ", "6724 ", "7890 ", "8043 ", "9182 ", "0213 ", "1324 ", "2457 ", "3560 ", 
+"4601 ", "5782 ", "6893 ", "7904 ", "8015 ", "9136 ", "0247 ", "6802 ", "7913 ", "8024 ", "9135 ", "0246 ", "0758 ",
+"1458 ", "2569 ", "3670 ", "4781 ", "5892 ", "6903 ", "7014 ", "8125 ", "9236 ", "0347 ", "1503 ", "2614 ", "3725 ", 
+"4836 ", "5947 ", "6058 ", "7169 ", "8270 ", "9381 ", "0492 ", "1647 ", "2758 ", "3869 ", "4970 ", "5081 ", "6192 ", 
+"7203 ", "8314 ", "9425 ", "0536 ", "1769 ", "2870 ", "3981 ", "4092 ", "5203 ", "6314 ", "7425 ", "8536 ", "9647 ",
+"1790 ", "2801 ", "3912 ", "4023 ", "5134 ", "6245 ", "7356 ", "8467 ", "9578 ", "0689 ", "1395 ", "2406 ", "3517 ",
+"4628 ", "5739 ", "6840 ", "7951 ", "8062 ", "9173 ", "0284 ", "0192 ", "1304 ", "2415 ", "3526 ", "4637 ", "5748 ", 
+"6859 ", "7960 ", "8071 ", "9182 ", "0293 ", "1405 ", "2516 ", "3627 ", "4738 ", "5849 ", "6950 ", "7061 ", "8172 ", 
+"9283 ", "0394 ", "1506 ", "2617 ", "3728 ", "4839 ", "5940 ", "6051 ", "7162 ", "8273 ", "9384 ", "0495 ", "1607 ", 
+"2718 ", "3829 ", "4930 ", "5041 ", "6152 ", "7263 ", "8374 ", "9485 ", "0596 ", "1708 ", "2819 ", "3940 ", "5142 ",
+"6253 ", "7364 ", "8475 ", "9586 ", "0697 ", "1358 ", "2469 ", "3580 ", "4691 ", "5702 ", "6813 ", "7924 ", "8035 ", 
+"9146 ", "0257 ", "1470 ", "2581 ", "3692 ", "4703 ", "5814 ", "6925 ", "7036 ", "8147 ", "9258 ", "0369 ", "0123 ", 
+"1234 ", "2345 ", "3456 ", "4567 ", "5678 ", "6789 ", "7890 ", "8901 ", "9012 ", "1357 ", "2468 ", "3579 ", "4680 ", 
+"5791 "],
+};
+
+function updateWordOptions() {
+const selectedList = listSelect.value;
+select.innerHTML = "";
+wordLists[selectedList].forEach((word, index) => {
+const option = document.createElement("option");
+option.value = word;
+option.textContent = `${index + 1}. ${word.trim()}`; // Mostra o número + palavra sem o espaço no final
+select.appendChild(option);
+});
+}
+
+listSelect.addEventListener("change", updateWordOptions);
+updateWordOptions();
+
+let currentWord = "";
+let currentIndex = 0;
+let active = false;
+let errorAt = -1;
+let errors = 0;
+let totalKeystrokes = 0;
+let startTime = null;
+let timerInterval;
+let countdown = 0;
+let finished = false;
+
+function startTyping() {
+currentWord = select.value;
+currentIndex = 0;
+errorAt = -1;
+errors = 0;
+totalKeystrokes = 0;
+active = true;
+finished = false;
+startTime = new Date();
+updateOutput();
+updateStats();
+clearInterval(timerInterval);
+
+const selectedSeconds = parseInt(timeSelect.value, 10);
+countdown = selectedSeconds;
+timerInterval = setInterval(updateTimer, 1000);
+
+hiddenInput.value = "";
+hiddenInput.focus();
+}
+
+function updateTimer() {
+if (countdown <= 0) {
+clearInterval(timerInterval);
+active = false;
+finished = true;
+document.getElementById("alertBox").style.display = "flex";
+updatePPM();
+return;
+}
+countdown--;
+const minutes = Math.floor(countdown / 60).toString().padStart(2, '0');
+const seconds = (countdown % 60).toString().padStart(2, '0');
+timerBox.textContent = `Tempo: ${minutes}:${seconds}`;
+}
+
+function updateOutput() {
+let html = "";
+for (let i = 0; i < currentWord.length; i++) {
+const char = currentWord[i] === " " ? "-" : currentWord[i];
+if (i < currentIndex) {
+html += `<span class="correct">${char}</span>`;
+} else if (i === currentIndex && errorAt === i) {
+html += `<span class="incorrect">${char}</span>`;
+} else if (i === currentIndex) {
+html += `<span>${char}</span>`;
+} else {
+html += char;
+}
+}
+output.innerHTML = html;
+}
+
+function updateStats() {
+errorBox.textContent = `Erros: ${errors}`;
+updatePPM(false);
+}
+
+function updatePPM(showFinal = true) {
+const elapsedSeconds = (new Date() - startTime) / 1000;
+const ppm = Math.round(totalKeystrokes / (elapsedSeconds / 60));
+ppmBox.textContent = `PPM: ${isNaN(ppm) ? 0 : ppm}`;
+
+if (showFinal && finished) {
+let performanceMessage = "";
+if (ppm < 100) performanceMessage = "Ruim";
+else if (ppm >= 101 && ppm <= 110) performanceMessage = "Bom";
+else if (ppm >= 111 && ppm <= 120) performanceMessage = "Muito Bom";
+else performanceMessage = "Você é o cara";
+
+output.innerHTML += `<p>Média de PPM: ${ppm} - ${performanceMessage}</p>`;
+// Mostra o alerta final e inicia o rodízio de imagem
+document.getElementById("alertBox").style.display = "flex";
+updateCarouselImage(); // chama a troca de imagem
+}
+}
+
+hiddenInput.addEventListener("input", (e) => {
+if (!active || finished) return;
+
+const key = e.target.value.slice(-1).toLowerCase();
+hiddenInput.value = "";
+
+document.querySelectorAll(".key").forEach(k => k.classList.remove("active"));
+  let keyToSelect = key;
+  if (key === '\\') {
+    keyToSelect = '\\\\'; // Escapa a barra invertida para o seletor de atributo
+  }
+  const keyDiv = document.querySelector(`.key[data-key="${keyToSelect}"]`);
+  if (keyDiv) keyDiv.classList.add("active");
+
+const expectedKey = currentWord[currentIndex].toLowerCase();
+
+if (key === expectedKey) {
+currentIndex++;
+totalKeystrokes++;
+errorAt = -1;
+
+if (currentIndex >= currentWord.length) {
+if (currentWord[currentWord.length - 1] === ' ') {
+currentIndex = 0;
+} else {
+errors++;
+}
+}
+} else {
+if (key !== "shift" && key !== "control" && key !== "alt") {
+errorAt = currentIndex;
+errors++;
+}
+}
+
+updateOutput();
+updateStats();
+});
+
+const fingerMap = {
+// Mão esquerda
+q: 4, a: 4, '\\': 4, z: 4,
+w: 3, s: 3, x: 3,
+e: 2, d: 2, c: 2,
+r: 1, t: 1, f: 1, g: 1, v: 1,
+
+// Mão direita
+y: 5, u: 5, h: 5, j: 5, b: 5,
+i: 6, k: 6, n: 6,
+o: 7, l: 7, 'm': 7,
+p: 8, ç: 8, ',': 8, '.': 8,
+
+// Polegares
+' ': 0
+};
+
+function highlightFinger(fingerIndex) {
+const dots = document.querySelectorAll(`.dot[data-finger="${fingerIndex}"]`);
+dots.forEach(dot => {
+dot.classList.add('active');
+setTimeout(() => {
+dot.classList.remove('active');
+}, 300);
+});
+}
+
+document.addEventListener('keydown', (e) => {
+const key = e.key.toLowerCase();
+const fingerIndex = fingerMap[key];
+if (fingerIndex !== undefined) {
+highlightFinger(fingerIndex);
+}
+});
+function closeAlertBox() {
+  imageIndex++;
+  if (imageIndex >= alertImages.length) {
+    imageIndex = 0;
+  }
+
+  // Atualiza a imagem exibida
+  const carouselImg = document.getElementById("carouselImage");
+  if (carouselImg) {
+    carouselImg.src = alertImages[imageIndex];
+  }
+
+  document.getElementById("alertBox").style.display = "none";
+}
+
+function goToLink() {
+  window.open(linksFinais[imageIndex], "_blank");
+}
+document.addEventListener("keydown", (e) => {
+  let key;
+  // Tratamento especial para a tecla '\' (barra invertida)
+  // O valor de e.key pode variar ('\' ou 'Dead' ou '´') dependendo do layout (ABNT2).
+  // O event.code 'Backslash' é mais confiável. O data-key no HTML é "\\".
+  if (e.key === '\\' || e.code === 'Backslash' || e.code === 'IntlYen' || e.code === 'IntlBackslash') {
+    key = '\\\\';
+  } else {
+    key = e.key;
+  }
+
+  const keyElement = document.querySelector(`.key[data-key="${key.toLowerCase()}"]`);
+  if (keyElement) {
+    keyElement.classList.add("active");
+  }
+});
+
+document.addEventListener("keyup", (e) => {
+  let key;
+  // Tratamento especial para a tecla '\' (barra invertida)
+  // O valor de e.key pode variar ('\' ou 'Dead' ou '´') dependendo do layout (ABNT2).
+  // O event.code 'Backslash' é mais confiável. O data-key no HTML é "\\".
+  if (e.key === '\\' || e.code === 'Backslash' || e.code === 'IntlYen' || e.code === 'IntlBackslash') {
+    key = '\\\\';
+  } else {
+    key = e.key;
+  }
+
+  const keyElement = document.querySelector(`.key[data-key="${key.toLowerCase()}"]`);
+  if (keyElement) {
+    keyElement.classList.remove("active");
+  }
+});
+</script>
+</body>
+</html>
