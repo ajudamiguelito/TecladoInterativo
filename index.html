@@ -266,7 +266,15 @@ font-size: 30px;
     .key.wider { width: 10.0vw; }
     .key.space { width: 30.0vw; }
 }
+.keyboard + div { 
+    padding: 5px !important; /* DIMINUI A ALTURA DA CAIXA */
+}
 
+.keyboard + div p:first-child { 
+    margin-bottom: 2px !important; /* APROXIMA O TEXTO ROXO */
+}
+/* FECHAMENTO DA MEDIA QUERY: */
+}
 
 </style>
 </head>
@@ -861,6 +869,7 @@ document.addEventListener("keyup", (e) => {
 </script>
 </body>
 </html>
+
 
 
 
