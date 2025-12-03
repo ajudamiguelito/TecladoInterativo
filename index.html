@@ -267,19 +267,24 @@ font-size: 30px;
     .key.space { width: 30.0vw; }
 
 /* 4. AJUSTE FINAL DO BLOCO DE INFORMAÇÕES (Quadro Roxo) */
+/* 4. AJUSTE FINAL DO BLOCO DE INFORMAÇÕES (Quadro Roxo) */
 .keyboard + div { 
-    margin-top: 1px !important; /* Margem superior reduzida */
-    padding: 1px !important;    /* Padding baixo para encolher a altura da caixa */
-    box-shadow: none !important; /* Remove sombra no celular */
+    margin-top: 5px !important; 
+    padding: 5px !important;    
+    box-shadow: none !important;
+    text-align: center !important; /* <--- NOVO: CENTRALIZA TUDO NA CAIXA */
 }
 
 .keyboard + div p:first-child { 
-    font-size: 10px !important; /* Fonte legível para a primeira linha (Dedos) */
-    margin-bottom: 2px !important; /* Aproxima o texto roxo */
+    font-size: 10px !important; 
+    margin-bottom: 2px !important;
+    line-height: 1.2 !important; /* Reduz a altura da linha para diminuir o quadro */
 }
 
 .keyboard + div p:last-child {
-    font-size: 9px !important; /* Fonte legível para a segunda linha (Benção) */
+    font-size: 9px !important; 
+    margin-bottom: 0px !important; /* <--- NOVO: Garante que não haja espaço extra abaixo da benção */
+    line-height: 1.2 !important; /* Reduz a altura da linha para diminuir o quadro */
 }
 
 } /* <--- Este é o ÚNICO fechamento correto da media query */
@@ -877,6 +882,7 @@ document.addEventListener("keyup", (e) => {
 </script>
 </body>
 </html>
+
 
 
 
