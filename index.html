@@ -163,123 +163,108 @@ font-size: 30px;
 
 /* Media query para dispositivos móveis */
 @media (max-width: 900px) {
-    /* 1. Correção do Título/Dedos (Seus ajustes) */
-    .finger-title {
-        flex-wrap: wrap;
-        gap: 2px;
-    }
-    
-    .finger-title .dot {
-        width: 12px;
-        height: 12px;
-        font-size: 8px;
-    }
-    
-    .titulo-interativo {
-        font-size: 12px;
-        margin: 0 3px;
-    }
+    /* 1. Correção do Título/Dedos (Seus ajustes) */
+    .finger-title {
+        flex-wrap: wrap;
+        gap: 2px;
+    }
+    
+    .finger-title .dot {
+        width: 12px;
+        height: 12px;
+        font-size: 8px;
+    }
+    
+    .titulo-interativo {
+        font-size: 12px;
+        margin: 0 3px;
+    }
 
-    /* 2. Correção do Grupo de Controles (label, select, button) */
-    label, select, button {
-        display: inline-block !important;
-        width: auto !important;
-        margin: 1px 0.5% !important;
-        padding: 1px 3px !important;
-        font-size: 12px !important;
-    }
-    
-    /* Força a quebra de linha antes do primeiro label e do botão Iniciar */
-    label:first-of-type, #startBtn {
-        clear: both;
-    }
-    
+    /* 2. Correção do Grupo de Controles (label, select, button) */
+    label, select, button {
+        display: inline-block !important;
+        width: auto !important;
+        margin: 1px 0.5% !important;
+        padding: 1px 3px !important;
+        font-size: 12px !important;
+    }
+    
+    /* Força a quebra de linha antes do primeiro label e do botão Iniciar */
+    label:first-of-type, #startBtn {
+        clear: both;
+    }
+    
+   	
 	#listSelect {
-        width: 20% !important;
-    }
+        width: 20% !important;
+    }
 	
 	#wordSelect {
-        width: 25% !important;
-    }
+        width: 25% !important;
+    }
 	 /* Ajuste fino para os selects */
-    #timeSelect {
-        width: 30% !important;
-    }
-    
-    /* O botão Iniciar deve ser menor */
-    #startBtn {
-        width: 25% !important;
-    }
-
-    /* Ajustes para o corpo da página */
-    body {
-        padding: 10px;
-    }
-    
-    /* Ajustes para a área de saída (Quadro Branco) */
-    .output {
-        font-size: 12px !important; /* Reduz a fonte */
-        padding: 8px !important; /* Reduz o padding */
-        display: block;
-        min-width: 50%;
-        max-width: 50%;
-        margin: 5px auto; /* REDUZIDO */
-    }
-    
-    /* 3. Correção do Grupo de Estatísticas */
-    .stats {
-        flex-direction: row;
-        gap: 2px;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 5px !important; /* REDUZIDO */
-    }
-    
-    .stat-box {
-        width: 25% !important;
-        margin: 0 0.5% !important;
-        padding: 3px !important;
-        font-size: 12px !important;
-    }
-    
-    /* Ajustes para o teclado */
-    .keyboard {
-        margin-top: 10px !important; /* REDUZIDO */
-    }
-    
-    .row {
-        gap: 0.5vw;
-        margin: 1vw 0;
-    }
-    
-    .key { 
-        width: 5.0vw;
-        height: 5.0vw; 
-        font-size: 2.5vw;
-        border-radius: 6px;
-        box-shadow: 0 4px #f0b300;
-    }
-    
-    /* Ajustes para teclas especiais */
-    .key.wide { width: 7.5vw; }
-    .key.wider { width: 10.0vw; }
-    .key.space { width: 30.0vw; }
+    #timeSelect {
+        width: 30% !important;
+    }
     
-    /* 4. AJUSTE FINAL DO BLOCO DE INFORMAÇÕES (Quadro Roxo) */
-    .keyboard + div { 
-        margin-top: 5px !important;
-        padding: 5px !important; /* DIMINUI A ALTURA DA CAIXA */
-        box-shadow: none !important;
+    /* O botão Iniciar deve ser menor */
+    #startBtn {
+        width: 25% !important;
     }
 
-    .keyboard + div p:first-child { 
-        font-size: 10px !important; /* TAMANHO DA FONTE DOS DEDOS */
-        margin-bottom: 2px !important; /* APROXIMA O TEXTO ROXO */
+    /* Ajustes para o corpo da página */
+    body {
+        padding: 10px;
     }
-
-    .keyboard + div p:last-child {
-        font-size: 9px !important; /* TAMANHO DA FONTE DA BENÇÃO */
+    
+    /* Ajustes para a área de saída (Quadro Branco) */
+    .output {
+        font-size: 12px !important; /* Reduz a fonte */
+        padding: 8px !important; /* Reduz o padding */
+        display: block;
+        min-width: 50%;
+        max-width: 50%;
+        margin: 5px auto; /* REDUZIDO */
     }
+    
+    /* 3. Correção do Grupo de Estatísticas */
+    .stats {
+        flex-direction: row;
+        gap: 2px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 5px !important; /* REDUZIDO */
+    }
+    
+    .stat-box {
+        width: 25% !important;
+        margin: 0 0.5% !important;
+        padding: 3px !important;
+        font-size: 12px !important;
+    }
+    
+    /* Ajustes para o teclado */
+    .keyboard {
+        margin-top: 10px !important; /* REDUZIDO */
+    }
+    
+    .row {
+        gap: 0.5vw;
+        margin: 1vw 0;
+    }
+    
+    .key { 
+        width: 5.0vw;
+        height: 5.0vw; 
+        font-size: 2.5vw;
+        border-radius: 6px;
+        box-shadow: 0 4px #f0b300;
+    }
+    
+    /* Ajustes para teclas especiais */
+    .key.wide { width: 7.5vw; }
+    .key.wider { width: 10.0vw; }
+    .key.space { width: 30.0vw; }
 }
 
 
@@ -876,6 +861,7 @@ document.addEventListener("keyup", (e) => {
 </script>
 </body>
 </html>
+
 
 
 
