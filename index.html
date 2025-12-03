@@ -272,23 +272,27 @@ font-size: 30px;
     padding: 5px !important;    
     box-shadow: none !important;
     
-    /* PROPRIEDADES DE CENTRALIZAÇÃO FINAL (CELULAR) */
-    display: flex !important; /* NOVO: Ativa o Flexbox */
-    flex-direction: column !important; /* NOVO: Empilha os parágrafos verticalmente */
-    justify-content: center !important; /* NOVO: Centraliza o conteúdo verticalmente */
-    text-align: center !important; /* Garante centralização horizontal */
+    /* PROPRIEDADES DE CENTRALIZAÇÃO */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    text-align: center !important;
+}
+
+/* FORÇA O TAMANHO DA FONTE PARA OS PARÁGRAFOS NO CELULAR */
+.info-box p {
+    font-size: 10px !important; /* <--- NOVO: Aplica o tamanho menor a todos os parágrafos */
+    line-height: 1.2 !important;
 }
 
 .info-box p:first-child { 
-    font-size: 10px !important; 
-    margin-bottom: 2px !important;
-    line-height: 1.2 !important; 
+    /* Esta regra agora só ajusta a margem e não precisa de font-size */
+    margin-bottom: 2px !important; 
 }
 
 .info-box p:last-child {
-    font-size: 9px !important; 
+    /* Esta regra agora só ajusta a margem e não precisa de font-size */
     margin-bottom: 0px !important; 
-    line-height: 1.2 !important; 
 }
     /* ---------------------------------------------------- */
 
@@ -887,6 +891,7 @@ document.addEventListener("keyup", (e) => {
 </script>
 </body>
 </html>
+
 
 
 
