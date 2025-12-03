@@ -265,8 +265,25 @@ font-size: 30px;
     .key.wide { width: 7.5vw; }
     .key.wider { width: 10.0vw; }
     .key.space { width: 30.0vw; }
-}
 
+    /* 4. AJUSTE EXCLUSIVO DO BLOCO DE INFORMAÇÕES ABAIXO DO TECLADO */
+    /* Este bloco de código está AGORA DENTRO da media query */
+    .keyboard + div { 
+        margin-top: 15px !important; /* Reduz a margem superior para economizar espaço */
+        padding: 8px !important;    /* Reduz o padding interno */
+        box-shadow: none !important; /* Opcional: remove a sombra no celular para leveza */
+    }
+
+    .keyboard + div p:first-child { 
+        font-size: 5px !important; /* Fonte bem pequena para a primeira linha */
+        margin-bottom: 3px !important; /* Espaçamento menor entre as linhas */
+    }
+
+    .keyboard + div p:last-child {
+        font-size: 9px !important; /* Fonte ainda menor para a mensagem de benção */
+    }
+    /* FIM DO AJUSTE DO BLOCO DE INFORMAÇÕES */
+} /* <--- ESSA CHAVE DEVE SER A ÚLTIMA DENTRO DO <style> (antes de </style>) */
 
 </style>
 </head>
@@ -871,5 +888,6 @@ document.addEventListener("keyup", (e) => {
 </script>
 </body>
 </html>
+
 
 
