@@ -268,23 +268,21 @@ font-size: 30px;
     .key.space { width: 30.0vw; }
     
     /* 4. AJUSTE EXCLUSIVO DO BLOCO DE INFORMAÇÕES ABAIXO DO TECLADO */
-    .keyboard + div { 
-        margin-top: 15px !important; 
-        padding: 8px !important;    
-        box-shadow: none !important; 
-    }
-
-    .keyboard + div p:first-child { 
-        font-size: 14px !important; 
-        margin-bottom: 5px !important;
-    }
-
-    .keyboard + div p:last-child {
-        font-size: 12px !important; 
-    }
-    /* FIM DO AJUSTE DO BLOCO DE INFORMAÇÕES */
+.keyboard + div { 
+    margin-top: 15px !important; /* Margem reduzida para celular */
+    padding: 8px !important;    /* Padding reduzido para celular */
+    box-shadow: none !important; /* Opcional: remove a sombra no celular */
 }
-/* A chave acima fecha o @media */
+
+.keyboard + div p:first-child { 
+    font-size: 10px !important; /* Reduzido PELA METADE */
+    margin-bottom: 3px !important; /* Margem reduzida */
+}
+
+.keyboard + div p:last-child {
+    font-size: 9px !important; /* Reduzido PELA METADE */
+}
+/* FIM DO AJUSTE DO BLOCO DE INFORMAÇÕES */
 
 
 </style>
@@ -890,5 +888,6 @@ document.addEventListener("keyup", (e) => {
 </script>
 </body>
 </html>
+
 
 
