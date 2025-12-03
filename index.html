@@ -266,7 +266,25 @@ font-size: 30px;
     .key.wide { width: 7.5vw; }
     .key.wider { width: 10.0vw; }
     .key.space { width: 30.0vw; }
+    
+    /* 4. AJUSTE EXCLUSIVO DO BLOCO DE INFORMAÇÕES ABAIXO DO TECLADO */
+    .keyboard + div { 
+        margin-top: 15px !important; 
+        padding: 8px !important;    
+        box-shadow: none !important; 
+    }
+
+    .keyboard + div p:first-child { 
+        font-size: 14px !important; 
+        margin-bottom: 5px !important;
+    }
+
+    .keyboard + div p:last-child {
+        font-size: 12px !important; 
+    }
+    /* FIM DO AJUSTE DO BLOCO DE INFORMAÇÕES */
 }
+/* A chave acima fecha o @media */
 
 
 </style>
@@ -872,4 +890,5 @@ document.addEventListener("keyup", (e) => {
 </script>
 </body>
 </html>
+
 
