@@ -267,24 +267,19 @@ font-size: 30px;
     .key.space { width: 30.0vw; }
 
 /* 4. AJUSTE FINAL DO BLOCO DE INFORMAÇÕES (Quadro Roxo) */
-/* 4. AJUSTE FINAL DO BLOCO DE INFORMAÇÕES (Quadro Roxo) */
 .keyboard + div { 
-    margin-top: 5px !important; 
-    padding: 5px !important;    
-    box-shadow: none !important;
-    text-align: center !important; /* <--- NOVO: CENTRALIZA TUDO NA CAIXA */
+    margin-top: 1px !important; /* Margem superior reduzida */
+    padding: 1px !important;    /* Padding baixo para encolher a altura da caixa */
+    box-shadow: none !important; /* Remove sombra no celular */
 }
 
 .keyboard + div p:first-child { 
-    font-size: 10px !important; 
-    margin-bottom: 2px !important;
-    line-height: 1.2 !important; /* Reduz a altura da linha para diminuir o quadro */
+    font-size: 10px !important; /* Fonte legível para a primeira linha (Dedos) */
+    margin-bottom: 2px !important; /* Aproxima o texto roxo */
 }
 
 .keyboard + div p:last-child {
-    font-size: 9px !important; 
-    margin-bottom: 0px !important; /* <--- NOVO: Garante que não haja espaço extra abaixo da benção */
-    line-height: 1.2 !important; /* Reduz a altura da linha para diminuir o quadro */
+    font-size: 9px !important; /* Fonte legível para a segunda linha (Benção) */
 }
 
 } /* <--- Este é o ÚNICO fechamento correto da media query */
@@ -422,11 +417,11 @@ font-size: 30px;
 	<div class="row">
     </div>
 </div>
-<div style="margin-top: 5px; padding: 10px; background-color: #e0bbff; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-    <p style="font-size: 16px; font-weight: bold; color: #333; margin-bottom: 5px; text-align: center;">
+<div style="margin-top: 1px; padding: 1px; background-color: #e0bbff; border-radius: 1px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <p style="font-size: 10px; font-weight: bold; color: #333; margin-bottom: 0px;">
         Posicionamento dos dedos: Polegar = 0 | Indicador = 1 | Médio = 2 | Anelar = 3 | Mínimo = 4
     </p>
-    <p style="font-size: 14px; color: #845ef7; margin-top: 0px; text-align: center;">
+    <p style="font-size: 9px; color: #845ef7; margin-top: 0px;">
         Que Deus Abençoe a Todos em nome de Jesus Cristo!!!
     </p>
 </div>
@@ -882,24 +877,3 @@ document.addEventListener("keyup", (e) => {
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
