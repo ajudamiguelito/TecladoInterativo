@@ -267,24 +267,29 @@ font-size: 30px;
     .key.space { width: 30.0vw; }
 
 /* 4. AJUSTE FINAL DO BLOCO DE INFORMAÇÕES (Quadro Roxo) */
-    .info-box {  
-        margin-top: 5px !important; 
-        padding: 5px !important;    
-        box-shadow: none !important;
-        text-align: center !important;
-    }
+.info-box { 
+    margin-top: 5px !important; 
+    padding: 5px !important;    
+    box-shadow: none !important;
+    
+    /* PROPRIEDADES DE CENTRALIZAÇÃO FINAL (CELULAR) */
+    display: flex !important; /* NOVO: Ativa o Flexbox */
+    flex-direction: column !important; /* NOVO: Empilha os parágrafos verticalmente */
+    justify-content: center !important; /* NOVO: Centraliza o conteúdo verticalmente */
+    text-align: center !important; /* Garante centralização horizontal */
+}
 
-    .info-box p:first-child { 
-        font-size: 10px !important; 
-        margin-bottom: 2px !important;
-        line-height: 1.2 !important; 
-    }
+.info-box p:first-child { 
+    font-size: 10px !important; 
+    margin-bottom: 2px !important;
+    line-height: 1.2 !important; 
+}
 
-    .info-box p:last-child {
-        font-size: 9px !important; 
-        margin-bottom: 0px !important; 
-        line-height: 1.2 !important; 
-    }
+.info-box p:last-child {
+    font-size: 9px !important; 
+    margin-bottom: 0px !important; 
+    line-height: 1.2 !important; 
+}
     /* ---------------------------------------------------- */
 
 } /* <--- O ÚNICO FECHAMENTO CORRETO DA MEDIA QUERY */
@@ -882,5 +887,6 @@ document.addEventListener("keyup", (e) => {
 </script>
 </body>
 </html>
+
 
 
