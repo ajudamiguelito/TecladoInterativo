@@ -160,6 +160,15 @@ height: 1px;
 width: 1px;
 font-size: 30px;
 }
+.keyboard {
+	margin-top: 30px;
+	/* NOVO: Fundo branco para a área do teclado */
+	background-color: white;
+	/* NOVO: Adiciona um pequeno espaçamento interno */
+	padding: 15px; 
+	/* NOVO: Borda arredondada para melhor visual */
+	border-radius: 15px; 
+}	
 
 /* Media query para dispositivos móveis */
 @media (max-width: 900px) {
@@ -278,6 +287,12 @@ font-size: 30px;
     justify-content: center !important;
     text-align: center !important;
 }
+/* Ajustes para o teclado */
+.keyboard {
+    margin-top: 10px !important; /* REDUZIDO */
+    /* NOVO: Ajuste de padding para celular */
+    padding: 5px !important;
+}	
 
 /* FORÇA O TAMANHO DA FONTE PARA OS PARÁGRAFOS NO CELULAR */
 .info-box p {
@@ -887,6 +902,7 @@ document.addEventListener("keyup", (e) => {
 </script>
 </body>
 </html>
+
 
 
 
